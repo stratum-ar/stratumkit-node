@@ -1,13 +1,13 @@
-enum Alignment {
+export enum Alignment {
     TOPLEFT, TOP, TOPRIGHT,
     LEFT, MIDDLE, RIGHT,
     BOTTOMLEFT, BOTTOM, BOTTOMRIGHT
 }
 
-enum ButtonState {
+export enum ButtonState {
     DEFAULT, DISABLED, HIGHLIGHTED, PRESSED
 }
 
-enum EditBoxState {
+export enum EditBoxState {
     DEFAULT, ERROR, OK
 }

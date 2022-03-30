@@ -2,7 +2,7 @@ import { App, AppInput } from "../app";
 import { Graphics } from "../llui";
 import { UIComponent } from "./component";
 export declare class UIView {
-    private ui;
+    readonly ui: UI;
     private components;
     constructor(ui: UI);
     handleInput(input: AppInput): void;

@@ -1,3 +1,4 @@
+import { Alignment, ButtonState, EditBoxState } from "../ui/enums/enums"
 import { RequestGenerator } from "./request"
 
 export class Graphics {
@@ -61,8 +62,7 @@ export class Graphics {
         x: number, y: number, text: string,
         r: number, g: number, b: number
     ) {
-        let arr = [30, x, y, text.length]
-        arr = this.addTextToArray(text, arr)
+        let arr = [30, x, y, ...this.textToBytes(text)]
         arr.push(r, g, b)
 
         this.rgen.append(arr)
@@ -73,8 +73,7 @@ export class Graphics {
         alignment: Alignment, text: string,
         r: number, g: number, b: number
     ) {
-        let arr = [32, x, y, width, height, alignment, text.length]
-        arr = this.addTextToArray(text, arr)
+        let arr = [32, x, y, width, height, alignment, ...this.textToBytes(text)]
         arr.push(r, g, b)
 
         this.rgen.append(arr)
@@ -82,24 +81,27 @@ export class Graphics {
 
     public drawButton(
         x: number, y: number, width: number, height: number, 
-        buttonState: ButtonState, text: string, iconNo: number | null,
-        r: number, g: number, b: number
+        buttonState: ButtonState, text: string, iconNo: number | null
     ) {
-        let arr = [33, x, y, width, height, buttonState, text.length]
-        arr = this.addTextToArray(text, arr)
-        arr.push(iconNo == null? 0 : iconNo, r, g, b)
+        const data = [33, x, y, width, height, buttonState, ...this.textToBytes(text)]
 
-        this.rgen.append(arr)
+        if (iconNo === null) {
+            data.push(0)
+        } else {
+            data.push(1, iconNo)
+        }
+
+        this.rgen.append(data)
     }
 
     public drawComboBox(
         x: number, y: number, width: number, height: number, 
-        buttonState: ButtonState, text: string,
+        buttonState: ButtonState, text: string
     ) {
-        let arr = [34, x, y, width, height, buttonState, text.length]
-        arr = this.addTextToArray(text, arr)
-
-        this.rgen.append(arr)
+        this.rgen.append([
+            34, x, y, width, height,
+            buttonState, ...this.textToBytes(text)
+        ])
     }
 
     public drawCheckBox(
@@ -126,8 +128,7 @@ export class Graphics {
         editBoxState: EditBoxState, text: string, isSelected: boolean,
         selStart?: number, selEnd?: number
     ) {
-        let arr = [39, x, y, width, height, editBoxState, text.length]
-        arr = this.addTextToArray(text, arr)
+        let arr = [39, x, y, width, height, editBoxState, ...this.textToBytes(text)]
 
         if (isSelected == true && selStart != null && selEnd != null)
             arr.push(1, selStart, selEnd)
@@ -148,14 +149,9 @@ export class Graphics {
         return this.rgen.toBuffer()
     }
 
-    public addTextToArray(
-        text: string, arr: number[]
-    ) {
-        for(let i = 0; i < text.length; i++) {
-            let char = text.charCodeAt(i)
-            arr.push(char >>> 8)
-            arr.push(char & 0xFF)
-        }
-        return arr
+    private textToBytes(text: string): number[] {
+        return [
+            text.length, ...(text.split("").map(c => c.charCodeAt(0) & 0xFF))
+        ]
     }
 }
