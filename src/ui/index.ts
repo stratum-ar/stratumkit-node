@@ -1,43 +1,7 @@
 import { App, AppInput } from "../app"
 import { Graphics } from "../llui"
 import { UIComponent } from "./component"
-
-export class UIView {
-    private components: UIComponent[] = []
-
-    constructor (
-        public readonly ui: UI
-    ) {}
-
-    public handleInput(input: AppInput) {
-        for (const component of this.components) {
-            if (component.hitTest(input)) {
-                component.handleInput(input)
-                return
-            }
-        }
-    }
-
-    public add(...components: UIComponent[]) {
-        components.forEach(component => component.ownerUI = this.ui)
-        
-        this.components.push(...components)
-    }
-
-    public remove(component: UIComponent) {
-        const index = this.components.indexOf(component)
-
-        if (index >= 0) {
-            this.components.splice(index, 1)
-        }
-    }
-
-    public render(gfx: Graphics) {
-        for (const component of this.components) {
-            component.render(gfx)
-        }
-    }
-}
+import { UIView, PaginatedView } from "./view"
 
 export class UI {
     private views: UIView[] = []
@@ -57,6 +21,16 @@ export class UI {
 
     public createView(creator: (view: UIView) => void): UIView {
         const view = new UIView(this)
+
+        creator(view)
+
+        return view
+    }
+
+    public createPaginatedView(
+        creator: (view: PaginatedView) => void
+    ): PaginatedView {
+        const view = new PaginatedView(this)
 
         creator(view)
 

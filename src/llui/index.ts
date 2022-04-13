@@ -142,7 +142,7 @@ export class Graphics {
         x: number, y: number, width: number, height: number,
         noOfItems: number, selectedIndex: number, vertical: boolean
     ) {
-        this.rgen.append([39, x, y, width, height, noOfItems,selectedIndex, vertical ? 1 : 0])
+        this.rgen.append([43, x, y, width, height, noOfItems, selectedIndex, vertical ? 1 : 0])
     }
 
     public toBuffer(): Buffer {
