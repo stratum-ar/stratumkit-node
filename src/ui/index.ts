@@ -19,6 +19,8 @@ export class UIView {
     }
 
     public add(...components: UIComponent[]) {
+        components.forEach(component => component.ownerUI = this.ui)
+        
         this.components.push(...components)
     }
 
@@ -59,6 +61,13 @@ export class UI {
         creator(view)
 
         return view
+    }
+
+    public back() {
+        if (this.viewIndex > 0) {
+            this.viewIndex -= 1
+            this.render()
+        }
     }
 
     public navigate(view: UIView) {

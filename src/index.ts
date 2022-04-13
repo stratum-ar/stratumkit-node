@@ -1,9 +1,12 @@
 import { App } from "./app"
 import { Graphics } from "./llui"
 import { UI } from "./ui"
-import { Button, Checkbox, ComboBox, Slider, Progress, EditBox, Pager } from "./ui/components/controls"
-import { Rectangle } from "./ui/components/shapes"
-import { Alignment, ButtonState } from "./ui/enums/enums"
+import { Slider } from "./ui/components/controls/slider"
+import { Button } from "./ui/components/controls/button"
+import { Checkbox } from "./ui/components/controls/checkbox"
+import { Progress } from "./ui/components/controls/progress"
+import { Label } from "./ui/components/text"
+import { Alignment } from "./ui/enums/enums"
 
 const app = new App()
 const ui = new UI(app)
@@ -16,33 +19,38 @@ app.start(process.argv[2])?.then(() => {
     console.log("Wee!")
 
     const mainView = ui.createView((v) => {
-        v.add(new Rectangle(16, 32, 60, 20).click(() => {
-            console.log("Rectangle click!")
-        }))
-        v.add(new Button("abc", 80, 32, 60, 20).click(() => {
-            console.log("Button click!")
-        }))
-        // v.add(new Checkbox(16, 16, 10, 10).click(() => {
-        //     console.log("Checkbox click!")
-        // }))
-        // v.add(new ComboBox(16, 102, 100, 20).click(() => {
-        //     console.log("ComboBox click!")
-        // }))
-        // v.add(new Slider(136, 54, 16, 48).click(() => {
-        //     console.log("Slider click!")
-        // }))
-        // v.add(new Progress(16, 196, 208, 8).click(() => {
-        //     console.log("Progress click!")
-        // }))
-        // v.add(new EditBox(16, 148, 60, 20).click(() => {
-        //     console.log("EditBox click!")
-        // }))
-        // v.add(new Pager(16, 208, 208, 16).click(() => {
-        //     console.log("Pager click!")
-        // }))
+        let count = 0
+
+        const label = new Label(count.toString(), 64, 64, 40, 20, Alignment.MIDDLE)
+
+        const decrement = new Button("-", 34, 64, 40, 20).click(() => {
+            count--
+            label.text = count.toString()
+        })
+        const increment = new Button("+", 104, 64, 40, 20).click(() => {
+            count++
+            label.text = count.toString()
+        })
+
+        v.add(new Checkbox(false, "Hello", 16, 100, 100, 16))
+
+        v.add(new Progress(0.3, 16, 130, 120, 16))
+        v.add(new Progress(0.7, 16, 150, 120, 16))
+
+        v.add(new Slider(0.5, 16, 170, 120, 16))
+        v.add(new Slider(0.5, 180, 16, 16, 120, true))
+
+        v.add(label, decrement, increment)
     })
 
     ui.navigate(mainView)
+
+    const gfx = new Graphics()
+
+    gfx.drawCheckBox(16, 16, false)
+    gfx.drawCheckBox(48, 16, true)
+
+    app.sendCommand(0x10, gfx.toBuffer())
 
     ui.render()
 })

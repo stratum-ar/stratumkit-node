@@ -1,8 +1,18 @@
+import { UI } from "."
 import { AppInput } from "../app"
 import { Graphics } from "../llui"
 
+export type InputEvent = {
+    input: AppInput,
+    target: UIComponent
+}
+
+export type InputHandler = (event: InputEvent) => void
+
 export abstract class UIComponent {
-    public onInput = (input?: AppInput) => {}
+    public onInput: InputHandler = (e) => {}
+
+    public ownerUI: UI | null = null
 
     constructor(
         public x: number,
@@ -11,7 +21,7 @@ export abstract class UIComponent {
         public height: number
     ) {}
 
-    public click(handler: (input?: AppInput) => void) {
+    public click(handler: InputHandler) {
         this.onInput = handler
 
         return this
@@ -24,7 +34,11 @@ export abstract class UIComponent {
     }
 
     public handleInput(input: AppInput) {
-        this.onInput(input)
+        this.onInput({input, target: this})
+
+        if (this.ownerUI) {
+            this.ownerUI.render()
+        }
     }
 
     public abstract render(gfx: Graphics): void

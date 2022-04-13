@@ -12,7 +12,7 @@ export declare class Graphics {
     drawAlignedText(x: number, y: number, width: number, height: number, alignment: Alignment, text: string, r: number, g: number, b: number): void;
     drawButton(x: number, y: number, width: number, height: number, buttonState: ButtonState, text: string, iconNo: number | null): void;
     drawComboBox(x: number, y: number, width: number, height: number, buttonState: ButtonState, text: string): void;
-    drawCheckBox(x: number, y: number, width: number, height: number, isChecked: boolean): void;
+    drawCheckBox(x: number, y: number, isChecked: boolean): void;
     drawSlider(x: number, y: number, width: number, height: number, fillPercentage: number, vertical: boolean): void;
     drawProgress(x: number, y: number, width: number, height: number, progress: number): void;
     drawEditBox(x: number, y: number, width: number, height: number, editBoxState: EditBoxState, text: string, isSelected: boolean, selStart?: number, selEnd?: number): void;

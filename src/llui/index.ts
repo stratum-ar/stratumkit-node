@@ -105,9 +105,9 @@ export class Graphics {
     }
 
     public drawCheckBox(
-        x: number, y: number, width: number, height: number, isChecked: boolean
+        x: number, y: number, isChecked: boolean
     ) {
-        this.rgen.append([35, x, y, width, height, isChecked ? 1 : 0])
+        this.rgen.append([35, x, y, isChecked ? 1 : 0])
     }
 
     public drawSlider(

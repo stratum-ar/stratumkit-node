@@ -17,6 +17,7 @@ export declare class UI {
     constructor(app: App);
     get currentView(): UIView | null;
     createView(creator: (view: UIView) => void): UIView;
+    back(): void;
     navigate(view: UIView): void;
     handleInput(input: AppInput): void;
     render(): void;
