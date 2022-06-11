@@ -8,7 +8,7 @@ import { Button } from "./button"
 
 class ComboBoxSelectorView extends PaginatedView {
     private backButton = new Button(
-        "Back", 16, 16, 50, 24
+        "Back", 42, 16, 50, 20
     ).click(() => this.ui.back())
 
     constructor(

@@ -14,5 +14,8 @@
   },
   "dependencies": {
     "smart-buffer": "^4.2.0"
-  }
+  },
+  "files": [
+    "lib/**/*"
+  ]
 }
